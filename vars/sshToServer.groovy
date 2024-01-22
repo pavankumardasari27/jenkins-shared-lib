@@ -1,3 +1,6 @@
-def sshToServer(String ip, String sshKey) {
-    sh "ssh -i ${sshKey} ubuntu@${ip}"
-} 
+def sshToServer(String ip, String credentialsId) {
+  withCredentials([sshUserPrivateKey(credentialsId: credentialsId, 
+   username: 'ubuntu', keyFileVariable: 'KEY')]) {
+     sh "ssh -i ${KEY} ubuntu@${ip}" 
+  }
+}
