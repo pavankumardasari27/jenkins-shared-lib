@@ -1,7 +1,7 @@
 // vars/common.groovy 
 
 def checkoutGitRepo(String url, String branch = 'main') {
-  git url: url, branch: branch, credentialsId: 'git-credentials'
+  git url: url, branch: branch, credentialsId: 'githubTE'
 }
 
 def setPermissions(String path) {
