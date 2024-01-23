@@ -1,7 +1,7 @@
 def connectToServer(def serverIp, def pemKey) {
     echo "Checking server connectivity..."
     retry(3) {
-        sh "ssh -o StrictHostKeyChecking=no -i ${pemKey} ec2-user@${serverIp} 'echo Connected'"
+        sh "ssh -o StrictHostKeyChecking=no -i ${pemKey} ubuntu@${serverIp} 'echo Connected'"
     }
 }
 
