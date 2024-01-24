@@ -46,20 +46,13 @@ def codeQualityTesting() {
     """
 }
 
-def startLaravelWithValet() {
-  // Install valet
-  sh 'composer global require laravel/valet'
-  // Move to workspace
+def runLaravelApp() {
   dir("${WORKSPACE}") {
-    // Start valet
-    sh 'valet install'
-    sh 'valet start'
-    // Export valet domain
-    sh 'export VALET_DOMAIN=${WORKSPACE}.test'
+    // Install dependencies
+    sh 'composer install'
+    // Start artisan server
+    sh 'php artisan serve --host=0.0.0.0 --port=8000 > /dev/null 2>&1 &'
   }
-  // Check site accessibility
-  sh 'sleep 15'
-  sh 'curl http://${VALET_DOMAIN}'
 }
 
 def setupNginx(String serverIp) {
