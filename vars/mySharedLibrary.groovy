@@ -47,16 +47,19 @@ def codeQualityTesting() {
 }
 
 def runLaravelApp() {
+  // Find PHP path
+  def phpPath = sh(returnStdout: true, script: 'which php').trim()
+  // Change to workspace   
   dir("${WORKSPACE}") {
-    try {  
-      sh 'php artisan serve --host=0.0.0.0 --port=8000 &'
+    try {
+      // Run artisan from PHP path  
+      sh "${phpPath} artisan serve --host 0.0.0.0 --port=8000 &"
     } catch (Exception e) {
       echo "Failed to start Laravel app: ${e}"
       throw e
     }
   }
 }
-
 
 def setupNginx(String serverIp) {
     sh """
