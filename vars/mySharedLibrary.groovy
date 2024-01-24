@@ -26,7 +26,6 @@ def composerInstallAndSetup() {
     sudo chmod -R 777 vendor
     sudo chmod -R 777 storage
     sudo chmod -R 777 .env
-    sudo chmod -R 777 composer.lock
     composer install
     php artisan key:generate --ansi
     php artisan config:cache
@@ -38,6 +37,8 @@ def composerInstallAndSetup() {
 
 def codeQualityTesting() {
     sh """
+    sudo chmod -R 664 composer.lock
+    sudo chmod -R 664 composer.json
     composer require laravel/pint --dev
     ./vendor/bin/pint --test
     ./vendor/bin/pint -v
