@@ -50,7 +50,8 @@ def codeQualityTesting() {
 
 def runApplication() {
   dir("${WORKSPACE}") {
-    exec 'nohup php artisan serve --host=0.0.0.0 --port=8000 &'
+    sh 'env'
+    sh 'nohup php artisan serve --host=0.0.0.0 --port=8000 &' 
   }
 }
 
