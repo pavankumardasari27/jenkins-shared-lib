@@ -49,22 +49,10 @@ def codeQualityTesting() {
 }
 
 def runApplication() {
-    dir("${WORKSPACE}") {
-        script {
-            // Set PATH to include PHP binary directory
-            env.PATH = "${tool 'PHP'}/bin:${env.PATH}"
-            
-            // Print current PATH for debugging
-            echo "Current PATH: ${env.PATH}"
-
-            // Ensure PHP and artisan are executable
-            sh 'chmod +x $(which php)'
-            sh 'chmod +x artisan'
-
-            // Run Laravel application
-            sh 'nohup php artisan serve --host=0.0.0.0 --port=8000 &'
-        }
-    }
+  dir("${WORKSPACE}") {
+    sh 'sleep 5' 
+    sh 'nohup php artisan serve --host=0.0.0.0 --port=8000 &'
+  }
 }
 
 
