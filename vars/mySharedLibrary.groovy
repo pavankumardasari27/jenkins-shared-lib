@@ -46,10 +46,7 @@ def codeQualityTesting() {
 }
 
 def runApplication() {
-    sh """
-    INSTANCE_IP_ADDRESS=$(hostname -I | awk '{print $1}')
-    php artisan serve --host=0.0.0.0 --port=8000 &
-    """
+    sh 'php artisan serve --host=0.0.0.0 --port=8000 &'
 }
 
 
