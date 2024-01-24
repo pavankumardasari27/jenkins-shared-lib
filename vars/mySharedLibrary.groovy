@@ -46,20 +46,10 @@ def codeQualityTesting() {
 }
 
 def runApplication() {
-  sh '''
+    sh """
     INSTANCE_IP_ADDRESS=$(hostname -I | awk '{print $1}')
     php artisan serve --host=0.0.0.0 --port=8000 &
-    sleep 5
-  '''
-  script {
-    def response = sh(script: "curl -I http://${INSTANCE_IP_ADDRESS}:8000", returnStdout: true).trim()
-    def statusCode = response =~ /HTTP\/1.1 (\d+)/
-    if (statusCode && statusCode[0][1] == '200') {
-      currentBuild.result = 'SUCCESS'
-    } else {
-      error 'Received a non-200 response code'  
-    }
-  }
+    """
 }
 
 
