@@ -69,3 +69,30 @@ def setupNginx(String serverIp) {
     EOF
     """
 }
+
+def sendTeamsNotification(String message) {
+    def teamsWebhookUrl = 'https://truequations0.webhook.office.com/webhookb2/a541c094-f87b-474d-a877-e29ff1e03e63@f9fd21cd-c649-4d2b-940e-c7946fb06a1d/JenkinsCI/d1f5492fb64946fca66301ba50cc12d1/0421cf00-4bef-46a0-9b03-ed0cacf88bd0'
+
+    def teamsMessage = JsonOutput.toJson([
+        "@type": "MessageCard",
+        "@context": "http://schema.org/extensions",
+        "summary": "Jenkins Pipeline Notification",
+        "themeColor": "0076D7",
+        "sections": [
+            [
+                "activityTitle": "Jenkins Pipeline Notification",
+                "activitySubtitle": message,
+                "markdown": true
+            ]
+        ]
+    ])
+
+    httpRequest(
+        acceptType: 'APPLICATION_JSON',
+        contentType: 'APPLICATION_JSON',
+        httpMode: 'POST',
+        requestBody: teamsMessage,
+        responseHandle: 'NONE',
+        url: teamsWebhookUrl
+    )
+}
