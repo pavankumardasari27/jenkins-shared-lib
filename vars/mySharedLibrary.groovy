@@ -25,6 +25,7 @@ def composerInstallAndSetup() {
     composer update
     sudo chown jenkins:jenkins composer.lock
     sudo chmod 664 composer.lock
+    sudo chmod -R 777 storage/logs
     php artisan key:generate --ansi
     php artisan config:cache
     php artisan migrate
