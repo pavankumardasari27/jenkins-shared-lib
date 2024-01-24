@@ -46,19 +46,20 @@ def codeQualityTesting() {
     """
 }
 
-def runLaravelApp() {
-  // Find PHP path
-  def phpPath = sh(returnStdout: true, script: 'which php').trim()
-  // Change to workspace   
+def startLaravelWithValet() {
+  // Install valet
+  sh 'composer global require laravel/valet'
+  // Move to workspace
   dir("${WORKSPACE}") {
-    try {
-      // Run artisan from PHP path  
-      sh "${phpPath} artisan serve --host 0.0.0.0 --port=8000 &"
-    } catch (Exception e) {
-      echo "Failed to start Laravel app: ${e}"
-      throw e
-    }
+    // Start valet
+    sh 'valet install'
+    sh 'valet start'
+    // Export valet domain
+    sh 'export VALET_DOMAIN=${WORKSPACE}.test'
   }
+  // Check site accessibility
+  sh 'sleep 15'
+  sh 'curl http://${VALET_DOMAIN}'
 }
 
 def setupNginx(String serverIp) {
