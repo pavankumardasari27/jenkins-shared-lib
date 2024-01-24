@@ -20,6 +20,8 @@ def givePermissions() {
 
 def composerInstallAndSetup() {
     sh """
+    sudo chown -R www-data:www-data .
+    sudo chmod -R 755 .
     composer install
     php artisan key:generate --ansi
     php artisan config:cache
