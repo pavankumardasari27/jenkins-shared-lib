@@ -47,16 +47,17 @@ def codeQualityTesting() {
 }
 
 def runLaravelApp() {
-  // Find artisan path
-  def artisanPath = sh(
-    script: "find . -name artisan | head -1", 
-    returnStdout: true
-  ).trim()
-  dir("${WORKSPACE}") {
-    sh 'composer install'
-    // Run artisan serve using full path
-    sh "${artisanPath} serve --host=0.0.0.0 --port=8000 > /dev/null 2>&1 &"
-  }
+    // Find artisan path
+    def artisanPath = sh(
+        script: "find . -name artisan | head -1",
+        returnStdout: true
+    ).trim()
+
+    dir("${WORKSPACE}") {
+        sh 'composer install'
+        // Run artisan serve using full path
+        sh "${artisanPath} serve --host=0.0.0.0 --port=8000 > /dev/null 2>&1 &"
+    }
 }
 
 def setupNginx(String serverIp) {
