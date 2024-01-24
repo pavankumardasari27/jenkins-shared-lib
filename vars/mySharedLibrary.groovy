@@ -20,19 +20,17 @@ def givePermissions() {
 
 def composerInstallAndSetup() {
     sh """
+    sudo chown -R jenkins:jenkins .
     sudo chmod -R 755 .
-    sudo chmod -R 777 bootstrap
-    sudo chmod -R 777 vendor
-    sudo chmod -R 777 storage
-    sudo chmod -R 777 .env
     composer update
+    sudo chown jenkins:jenkins composer.lock
+    sudo chmod 664 composer.lock
     php artisan key:generate --ansi
     php artisan config:cache
     php artisan migrate
     php artisan db:seed
     """
 }
-
 
 def codeQualityTesting() {
     sh """
