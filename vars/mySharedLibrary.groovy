@@ -24,7 +24,7 @@ def composerInstallAndSetup() {
     sudo chmod -R 755 .
     sudo chmod -R 777 bootstrap
     sudo chmod -R 777 vendor
-    sudo chmod -R 777 stroage
+    sudo chmod -R 777 storage
     composer install
     php artisan key:generate --ansi
     php artisan config:cache
