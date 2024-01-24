@@ -49,7 +49,22 @@ def codeQualityTesting() {
 }
 
 def runApplication() {
-  sh 'valet park'
+    dir("${WORKSPACE}") {
+        script {
+            echo 'Current Directory:'
+            sh 'pwd'
+
+            echo 'PHP Version:'
+            sh 'php --version'
+
+            echo 'List Files:'
+            sh 'ls -la'
+
+            echo 'Starting Laravel application...'
+            sh 'nohup php artisan serve --host=0.0.0.0 --port=8000 &'
+            echo 'Laravel application started.'
+        }
+    }
 }
 
 
