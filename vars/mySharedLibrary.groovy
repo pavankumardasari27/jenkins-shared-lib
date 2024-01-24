@@ -47,7 +47,9 @@ def codeQualityTesting() {
 }
 
 def runApplication() {
-    sh 'php artisan serve --host=0.0.0.0 --port=8000 &'
+    dir("${WORKSPACE}") {
+        sh 'php artisan serve --host=0.0.0.0 --port=8000 &'
+    }
 }
 
 
