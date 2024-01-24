@@ -27,7 +27,6 @@ def composerInstallAndSetup() {
     sudo chmod -R 777 storage
     sudo chmod -R 777 .env
     composer update
-    composer install
     php artisan key:generate --ansi
     php artisan config:cache
     php artisan migrate
