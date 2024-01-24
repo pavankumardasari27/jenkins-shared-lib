@@ -13,7 +13,7 @@ def sshToServer(String pemKey, String serverIp) {
 def givePermissions() {
     sh """
     sudo chown www-data:www-data -R *
-    sudo find . -type d -exec chmod 755 {} \\;
+    sudo find . -type d -exec chmod 777 {} \\;
     sudo find . -type f -exec chmod 644 {} \\;
     """
 }
