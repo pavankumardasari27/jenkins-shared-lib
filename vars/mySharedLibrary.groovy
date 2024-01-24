@@ -46,7 +46,7 @@ def codeQualityTesting() {
     """
 }
 
-def runApplication() {
+def runApplication(Map params) {
     dir(params.workspace) {
         sh 'valet install'
         sh 'valet link'
