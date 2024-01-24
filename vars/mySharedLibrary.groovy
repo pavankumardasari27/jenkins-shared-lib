@@ -49,10 +49,7 @@ def codeQualityTesting() {
 }
 
 def runApplication() {
-  dir("${WORKSPACE}") {
-    sh 'env'
-    sh 'nohup php artisan serve --host=0.0.0.0 --port=8000 &' 
-  }
+  sh 'valet park'
 }
 
 
