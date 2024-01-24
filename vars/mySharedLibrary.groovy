@@ -1,5 +1,7 @@
 def checkout(String credentialsId, String gitRepo) {
-    git credentialsId: credentialsId, url: gitRepo
+    dir("${env.WORKSPACE}") {
+        git credentialsId: credentialsId, url: gitRepo
+    }
 }
 
 def sshToServer(String pemKey, String serverIp) {
