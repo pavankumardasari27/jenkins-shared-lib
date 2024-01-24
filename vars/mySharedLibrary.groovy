@@ -1,6 +1,19 @@
-def checkout(String credentialsId, String gitRepo) {
-    dir("${env.WORKSPACE}") {
-        git credentialsId: credentialsId, url: gitRepo
+// def checkout(String credentialsId, String gitRepo) {
+//     dir("${env.WORKSPACE}") {
+//         git credentialsId: credentialsId, url: gitRepo
+//     }
+// }
+
+def checkout(Map params) {
+    dir(params.workspace) {
+        checkout([$class: 'GitSCM', 
+                  branches: [[name: '*/main']],
+                  doGenerateSubmoduleConfigurations: false, 
+                  extensions: [[$class: 'RelativeTargetDirectory', 
+                                relativeTargetDir: '']], 
+                  submoduleCfg: [], 
+                  userRemoteConfigs: [[credentialsId: params.credentialsId, 
+                                       url: params.gitRepo]]])
     }
 }
 
@@ -49,21 +62,10 @@ def codeQualityTesting() {
 }
 
 def runApplication() {
-    dir("${WORKSPACE}") {
-        script {
-            echo 'Current Directory:'
-            sh 'pwd'
-
-            echo 'PHP Version:'
-            sh 'php --version'
-
-            echo 'List Files:'
-            sh 'ls -la'
-
-            echo 'Starting Laravel application...'
-            sh 'nohup php artisan serve --host=0.0.0.0 --port=8000 &'
-            echo 'Laravel application started.'
-        }
+    dir(params.workspace) {
+        sh 'valet install'
+        sh 'valet link'
+        sh 'valet open'
     }
 }
 
