@@ -7,7 +7,7 @@
 def checkout(Map params) {
     dir(params.workspace) {
         checkout([$class: 'GitSCM', 
-                  branches: [[name: '*/main']],
+                  branches: [[name: '*/master']],
                   doGenerateSubmoduleConfigurations: false, 
                   extensions: [[$class: 'RelativeTargetDirectory', 
                                 relativeTargetDir: '']], 
