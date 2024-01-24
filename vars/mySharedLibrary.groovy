@@ -21,6 +21,7 @@ def givePermissions() {
 def composerInstallAndSetup() {
     sh """
     composer install
+    php artisan key:generate --ansi
     php artisan config:cache
     php artisan migrate
     php artisan db:seed
