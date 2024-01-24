@@ -49,10 +49,10 @@ def codeQualityTesting() {
 def runLaravelApp() {
   dir("${WORKSPACE}") {
     try {
-      sh 'php artisan --version'
+      sh 'php artisan --version'  
       sh 'php artisan serve --host=0.0.0.0 --port=8000 > laravel.log 2>&1 &'
-      sh 'sleep 10' // wait for app to start
-      sh 'curl http://localhost:8000' // test if running
+      sh 'sleep 10' 
+      sh 'curl http://localhost:8000' 
     } catch (Exception e) {
       echo "Failed to start Laravel app: ${e}"
       throw e
