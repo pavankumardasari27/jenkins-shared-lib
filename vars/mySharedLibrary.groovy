@@ -49,9 +49,19 @@ def runApplication() {
     sh """
     php artisan serve --host=0.0.0.0 --port=8000 &
     sleep 5
-    curl -I http://localhost:8000
     """
+    script {
+        def response = sh(script: 'curl -I http://localhost:8000', returnStdout: true).trim()
+        def statusCode = response =~ /HTTP\/1.1 (\d+)/
+
+        if (statusCode && statusCode[0][1] == '200') {
+            currentBuild.result = 'SUCCESS'
+        } else {
+            error 'Received a non-200 response code'
+        }
+    }
 }
+
 
 def setupNginx(String serverIp) {
     sh """
