@@ -70,6 +70,14 @@ def setupNginx(String serverIp) {
     """
 }
 
+def cleanup() {
+    sh '''
+    # Add your cleanup commands here
+    echo "Cleaning up workspace"
+    rm -rf *
+    '''
+}
+
 def sendTeamsNotification(String message) {
     def teamsWebhookUrl = 'https://truequations0.webhook.office.com/webhookb2/a541c094-f87b-474d-a877-e29ff1e03e63@f9fd21cd-c649-4d2b-940e-c7946fb06a1d/JenkinsCI/d1f5492fb64946fca66301ba50cc12d1/0421cf00-4bef-46a0-9b03-ed0cacf88bd0'
 
