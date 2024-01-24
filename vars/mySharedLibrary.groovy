@@ -1,19 +1,6 @@
-// def checkout(String credentialsId, String gitRepo) {
-//     dir("${env.WORKSPACE}") {
-//         git credentialsId: credentialsId, url: gitRepo
-//     }
-// }
-
-def checkout(Map params) {
-    dir(params.workspace) {
-        checkout([$class: 'GitSCM', 
-                  branches: [[name: '*/master']],
-                  doGenerateSubmoduleConfigurations: false, 
-                  extensions: [[$class: 'RelativeTargetDirectory', 
-                                relativeTargetDir: '']], 
-                  submoduleCfg: [], 
-                  userRemoteConfigs: [[credentialsId: params.credentialsId, 
-                                       url: params.gitRepo]]])
+def checkout(String credentialsId, String gitRepo) {
+    dir("${env.WORKSPACE}") {
+        git credentialsId: credentialsId, url: gitRepo
     }
 }
 
