@@ -30,6 +30,7 @@ def composerInstallAndSetup() {
     sudo chown -R jenkins:jenkins .
     sudo chmod -R 755 .
     composer update
+    sudo apt-get install php-xml
     sudo chown jenkins:jenkins composer.lock
     sudo chmod 664 composer.lock
     sudo chmod -R 777 storage
@@ -61,7 +62,6 @@ def runLaravelApp() {
     ).trim()
 
     dir("${WORKSPACE}") {
-        sh 'composer update'
         // Run artisan serve in the foreground
         sh "${artisanPath} serve --host=0.0.0.0 --port=8000"
     }
