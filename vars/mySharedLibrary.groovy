@@ -61,9 +61,9 @@ def runLaravelApp() {
     ).trim()
 
     dir("${WORKSPACE}") {
-        sh 'composer install'
-        // Run artisan serve using full path
-        sh "${artisanPath} serve --host=0.0.0.0 --port=8000 > /dev/null 2>&1 &"
+        sh 'composer update'
+        // Run artisan serve in the foreground
+        sh "${artisanPath} serve --host=0.0.0.0 --port=8000"
     }
 }
 
