@@ -10,6 +10,13 @@ def sshToServer(String pemKey, String serverIp) {
     }
 }
 
+def sshAndPrintSuccessMessage(String credentialsId, String serverIp) {
+    withCredentials([sshUserPrivateKey(credentialsId: credentialsId, keyFileVariable: 'SSH_KEY')]) {
+        def sshCommand = "ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${SSH_USERNAME}@${serverIp}"
+        sh "${sshCommand} echo 'Connection successful to ${serverIp}'"
+    }
+}
+
 def givePermissions() {
     sh """
     sudo chown www-data:www-data -R *
