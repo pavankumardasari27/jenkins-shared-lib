@@ -74,7 +74,8 @@ def runLaravelApp() {
 
     dir("${WORKSPACE}") {
         timeout(time: 5, unit: 'MINUTES') {
-            sh "php artisan key:generate --ansi &"  // Run in the background
+            // Generate Laravel key and start the application in the background
+            sh "php artisan key:generate --ansi && ${artisanPath} serve --host=0.0.0.0 --port=8000 &"
 
             // Wait for the application to be ready
             waitUntil {
@@ -85,6 +86,7 @@ def runLaravelApp() {
                 return response == 200
             }
 
+            // Confirm that the application is ready
             sh "echo 'Application is ready.'"
 
             // Now you can perform additional steps or checks as needed
