@@ -20,20 +20,25 @@ def sshAndPrintSuccessMessage(String credentialsId, String serverIp) {
 def givePermissions() {
     sh """
     sudo chown www-data:www-data -R *
-    sudo find . -type d -exec chmod 777 {} \\;
+    sudo find . -type d -exec chmod 755 {} \\;
     sudo find . -type f -exec chmod 644 {} \\;
     """
 }
 
 def composerInstallAndSetup() {
+    def jenkinsUser = 'jenkins'
+    def jenkinsGroup = 'jenkins'
+    def directoryPermission = '755'
+    def filePermission = '664'
+
     sh """
-    sudo chown -R jenkins:jenkins .
-    sudo chmod -R 755 .
+    sudo chown -R ${jenkinsUser}:${jenkinsGroup} .
+    sudo chmod -R ${directoryPermission} .
     composer update
     sudo apt-get install php-xml
     sudo apt-get install php-pdo php-mysql
-    sudo chown jenkins:jenkins composer.lock
-    sudo chmod 664 composer.lock
+    sudo chown ${jenkinsUser}:${jenkinsGroup} composer.lock
+    sudo chmod ${filePermission} composer.lock
     sudo chmod -R 777 storage
     php artisan key:generate --ansi
     php artisan config:cache
@@ -55,14 +60,12 @@ def codeQualityTesting() {
 }
 
 def runLaravelApp() {
-    // Find artisan path
     def artisanPath = sh(
         script: "find . -name artisan | head -1",
         returnStdout: true
     ).trim()
 
     dir("${WORKSPACE}") {
-        // Run artisan serve in the foreground with a timeout of 2 minutes
         timeout(time: 2, unit: 'MINUTES') {
             sh "php artisan key:generate --ansi"
             sh "${artisanPath} serve --host=0.0.0.0 --port=8000"
@@ -82,7 +85,6 @@ def setupNginx(String serverIp) {
 
 def cleanup() {
     sh '''
-    # Add your cleanup commands here
     echo "Cleaning up workspace"
     rm -rf *
     '''
