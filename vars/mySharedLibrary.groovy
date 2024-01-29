@@ -57,6 +57,10 @@ def codeQualityTesting() {
     """
 }
 
+def dbSetUp() {
+    sh "php artisan migrate"
+}
+
 def runLaravelApp() {
     def artisanPath = sh(
         script: "find . -name artisan | head -1",
