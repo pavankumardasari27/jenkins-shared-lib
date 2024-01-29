@@ -99,7 +99,6 @@ def runLaravelApp() {
     }
 }
 
-
 def setupNginx(String serverIp) {
     sh """
     ssh -o StrictHostKeyChecking=no -l ubuntu ${serverIp} << EOF
