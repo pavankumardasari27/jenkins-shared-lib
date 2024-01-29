@@ -27,12 +27,12 @@ def givePermissions() {
 
 def composerInstallAndSetup() {
     sh """
-    sudo chown -R www-data:www-data .
+    sudo chown -R jenkins:jenkins .
     sudo chmod -R 755 .
     composer update
     sudo apt-get install php-xml
     sudo apt-get install php-pdo php-mysql
-    sudo chown www-data:www-data composer.lock
+    sudo chown jenkins:jenkins composer.lock
     sudo chmod 664 composer.lock
     sudo chmod -R 777 storage
     php artisan key:generate --ansi
