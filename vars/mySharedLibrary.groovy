@@ -41,6 +41,7 @@ def composerInstallAndSetup(String user) {
     sudo -u ${user} php artisan key:generate --ansi
     sudo -u ${user} php artisan config:cache
     sudo -u ${user} php artisan migrate
+    sudo -u ${user} sudo apt-get install php-curl
     """
 }
 
