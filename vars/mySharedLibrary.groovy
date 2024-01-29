@@ -73,7 +73,7 @@ def runLaravelApp() {
     ).trim()
 
     dir("${WORKSPACE}") {
-        timeout(time: 5, unit: 'MINUTES') {
+        timeout(time: 1, unit: 'MINUTES') {
             // Generate Laravel key and start the application in the background
             sh "php artisan key:generate --ansi && ${artisanPath} serve --host=0.0.0.0 --port=8000 &"
 
