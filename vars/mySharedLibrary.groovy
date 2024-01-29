@@ -73,24 +73,29 @@ def runLaravelApp() {
     ).trim()
 
     dir("${WORKSPACE}") {
-        timeout(time: 2, unit: 'MINUTES') {
-            sh "php artisan key:generate --ansi"
-            sh "${artisanPath} serve --host=${instanceIp} --port=8000"
+        timeout(time: 5, unit: 'MINUTES') {
+            sh "php artisan key:generate --ansi &"  // Run in the background
 
-            // Add a step to check the application using curl
-            sh """
-            sleep 5s  # Wait for the application to start (adjust this based on your app's startup time)
-            response=\$(curl -s -o /dev/null -w "%{http_code}" http://${instanceIp}:8000)
-            if [ "\$response" == "200" ]; then
-                echo "Application is running successfully on IP: ${instanceIp}"
-            else
-                echo "Error: Application returned HTTP status \$response."
-                exit 1  # Fail the build if the application is not accessible
-            fi
-            """
+            // Wait for the application to be ready
+            waitUntil {
+                def response = sh(
+                    script: "curl -s -o /dev/null -w \"%{http_code}\" http://${instanceIp}:8000",
+                    returnStatus: true
+                )
+                return response == 200
+            }
+
+            sh "echo 'Application is ready.'"
+
+            // Now you can perform additional steps or checks as needed
+            // ...
+
+            // Stop the background process (optional)
+            sh "kill \$(ps aux | grep 'php artisan serve' | awk '{print \$2}')"
         }
     }
 }
+
 
 def setupNginx(String serverIp) {
     sh """
