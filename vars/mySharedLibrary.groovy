@@ -65,7 +65,7 @@ def runLaravelApp() {
     dir("${WORKSPACE}") {
         // Run artisan serve in the foreground with a timeout of 2 minutes
         timeout(time: 2, unit: 'MINUTES') {
-            //sh "sudo apt-get install php-mysql"
+            sh "php artisan key:generate --ansi"
             sh "${artisanPath} serve --host=0.0.0.0 --port=8000"
         }
     }
