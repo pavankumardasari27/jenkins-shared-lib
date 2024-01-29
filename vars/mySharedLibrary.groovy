@@ -34,15 +34,15 @@ def composerInstallAndSetup() {
     sh """
     sudo chown -R ${jenkinsUser}:${jenkinsGroup} .
     sudo chmod -R ${directoryPermission} .
-    composer update
+    sudo -u ${jenkinsUser} composer update
     sudo apt-get install php-xml
     sudo apt-get install php-pdo php-mysql
     sudo chown ${jenkinsUser}:${jenkinsGroup} composer.lock
     sudo chmod ${filePermission} composer.lock
     sudo chmod -R 777 storage
-    php artisan key:generate --ansi
-    php artisan config:cache
-    php artisan migrate
+    sudo -u ${jenkinsUser} php artisan key:generate --ansi
+    sudo -u ${jenkinsUser} php artisan config:cache
+    sudo -u ${jenkinsUser} php artisan migrate
     """
 }
 
