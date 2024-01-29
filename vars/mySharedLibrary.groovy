@@ -26,8 +26,8 @@ def givePermissions() {
 }
 
 def composerInstallAndSetup() {
-    def jenkinsUser = 'jenkins'
-    def jenkinsGroup = 'jenkins'
+    def jenkinsUser = 'www-data'
+    def jenkinsGroup = 'www-data'
     def directoryPermission = '755'
     def filePermission = '664'
 
