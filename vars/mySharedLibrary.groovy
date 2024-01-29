@@ -67,10 +67,27 @@ def runLaravelApp() {
         returnStdout: true
     ).trim()
 
+    def instanceIp = sh(
+        script: "curl -s http://169.254.169.254/latest/meta-data/local-ipv4",
+        returnStdout: true
+    ).trim()
+
     dir("${WORKSPACE}") {
         timeout(time: 2, unit: 'MINUTES') {
             sh "php artisan key:generate --ansi"
-            sh "${artisanPath} serve --host=0.0.0.0 --port=8000"
+            sh "${artisanPath} serve --host=${instanceIp} --port=8000"
+
+            // Add a step to check the application using curl
+            sh """
+            sleep 5s  # Wait for the application to start (adjust this based on your app's startup time)
+            response=\$(curl -s -o /dev/null -w "%{http_code}" http://${instanceIp}:8000)
+            if [ "\$response" == "200" ]; then
+                echo "Application is running successfully on IP: ${instanceIp}"
+            else
+                echo "Error: Application returned HTTP status \$response."
+                exit 1  # Fail the build if the application is not accessible
+            fi
+            """
         }
     }
 }
