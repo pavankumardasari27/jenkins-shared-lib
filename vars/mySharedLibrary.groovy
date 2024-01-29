@@ -17,32 +17,30 @@ def sshAndPrintSuccessMessage(String credentialsId, String serverIp) {
     }
 }
 
-def givePermissions() {
+def givePermissions(String user) {
     sh """
-    sudo chown www-data:www-data -R *
+    sudo chown ${user}:${user} -R *
     sudo find . -type d -exec chmod 755 {} \\;
     sudo find . -type f -exec chmod 644 {} \\;
     """
 }
 
-def composerInstallAndSetup() {
-    def jenkinsUser = 'www-data'
-    def jenkinsGroup = 'www-data'
+def composerInstallAndSetup(String user) {
     def directoryPermission = '755'
     def filePermission = '664'
 
     sh """
-    sudo chown -R ${jenkinsUser}:${jenkinsGroup} .
+    sudo chown -R ${user}:${user} .
     sudo chmod -R ${directoryPermission} .
-    sudo -u ${jenkinsUser} composer update
+    sudo -u ${user} composer update
     sudo apt-get install php-xml
     sudo apt-get install php-pdo php-mysql
-    sudo chown ${jenkinsUser}:${jenkinsGroup} composer.lock
+    sudo chown ${user}:${user} composer.lock
     sudo chmod ${filePermission} composer.lock
     sudo chmod -R 777 storage
-    sudo -u ${jenkinsUser} php artisan key:generate --ansi
-    sudo -u ${jenkinsUser} php artisan config:cache
-    sudo -u ${jenkinsUser} php artisan migrate
+    sudo -u ${user} php artisan key:generate --ansi
+    sudo -u ${user} php artisan config:cache
+    sudo -u ${user} php artisan migrate
     """
 }
 
