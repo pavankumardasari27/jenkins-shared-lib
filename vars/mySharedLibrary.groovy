@@ -62,43 +62,46 @@ def dbSetUp() {
     sh "php artisan migrate"
 }
 
+// def runLaravelApp() {
+//     def artisanPath = sh(
+//         script: "find . -name artisan | head -1",
+//         returnStdout: true
+//     ).trim()
+
+//     def instanceIp = sh(
+//         script: "curl -s http://169.254.169.254/latest/meta-data/local-ipv4",
+//         returnStdout: true
+//     ).trim()
+
+//     dir("${WORKSPACE}") {
+//         timeout(time: 2, unit: 'MINUTES') { // Set timeout to 2 minutes
+//             // Generate Laravel key and start the application in the background
+//             sh "php artisan key:generate --ansi && ${artisanPath} serve --host=0.0.0.0 --port=8000 &"
+
+//             // Wait for the application to be ready
+//             waitUntil {
+//                 def response = sh(
+//                     script: "curl -s -o /dev/null -w \"%{http_code}\" http://${instanceIp}:8000",
+//                     returnStatus: true
+//                 )
+//                 return response == 200
+//             }
+
+//             // Confirm that the application is ready
+//             sh "echo 'Application is ready.'"
+
+//             // Additional checks or steps can be added here
+//             // ...
+
+//             // Stop the background process (optional)
+//             sh "kill \$(ps aux | grep 'php artisan serve' | awk '{print \$2}')"
+//         }
+//     }
+// }
+
 def runLaravelApp() {
-    def artisanPath = sh(
-        script: "find . -name artisan | head -1",
-        returnStdout: true
-    ).trim()
-
-    def instanceIp = sh(
-        script: "curl -s http://169.254.169.254/latest/meta-data/local-ipv4",
-        returnStdout: true
-    ).trim()
-
-    dir("${WORKSPACE}") {
-        timeout(time: 2, unit: 'MINUTES') { // Set timeout to 2 minutes
-            // Generate Laravel key and start the application in the background
-            sh "php artisan key:generate --ansi && ${artisanPath} serve --host=0.0.0.0 --port=8000 &"
-
-            // Wait for the application to be ready
-            waitUntil {
-                def response = sh(
-                    script: "curl -s -o /dev/null -w \"%{http_code}\" http://${instanceIp}:8000",
-                    returnStatus: true
-                )
-                return response == 200
-            }
-
-            // Confirm that the application is ready
-            sh "echo 'Application is ready.'"
-
-            // Additional checks or steps can be added here
-            // ...
-
-            // Stop the background process (optional)
-            sh "kill \$(ps aux | grep 'php artisan serve' | awk '{print \$2}')"
-        }
-    }
+    sh "php artisan serve --host=0.0.0.0 --port=8000 &"
 }
-
 
 def setupNginx(String serverIp) {
     sh """
