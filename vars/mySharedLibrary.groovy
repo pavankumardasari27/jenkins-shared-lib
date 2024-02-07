@@ -74,7 +74,7 @@ def runLaravelApp() {
     ).trim()
 
     dir("${WORKSPACE}") {
-        timeout(time: 1, unit: 'MINUTES') {
+        timeout(time: 2, unit: 'MINUTES') { // Set timeout to 2 minutes
             // Generate Laravel key and start the application in the background
             sh "php artisan key:generate --ansi && ${artisanPath} serve --host=0.0.0.0 --port=8000 &"
 
@@ -90,7 +90,7 @@ def runLaravelApp() {
             // Confirm that the application is ready
             sh "echo 'Application is ready.'"
 
-            // Now you can perform additional steps or checks as needed
+            // Additional checks or steps can be added here
             // ...
 
             // Stop the background process (optional)
@@ -98,6 +98,7 @@ def runLaravelApp() {
         }
     }
 }
+
 
 def setupNginx(String serverIp) {
     sh """
